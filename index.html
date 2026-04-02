@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priyanshu Raj | Portfolio</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#020617",
+                        primary: "#3b82f6",
+                        secondary: "#6366f1",
+                    },
+                    animation: {
+                        "float": "float 6s ease-in-out infinite",
+                        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                    },
+                    keyframes: {
+                        float: {
+                            "0%, 100%": { transform: "translateY(0)" },
+                            "50%": { transform: "translateY(-10px)" },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome / Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #d1d5db; /* gray-300 */
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155; 
+        }
+
+        /* Typing cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 4px;
+            height: 1.2em;
+            background-color: #3b82f6;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Lightbox styles */
+        #lightbox {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #lightbox.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #lightbox-img {
+            max-height: 85vh;
+            max-width: 90vw;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        #lightbox.open #lightbox-img {
+            transform: scale(1);
+        }
+        .clickable-image {
+            cursor: pointer;
+        }
+
+        /* Skill bar animation */
+        .skill-bar-fill {
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-900/20 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <a href="#" class="font-bold text-2xl tracking-tighter text-white">
+                    <span class="text-primary">PR</span> Portfolio
+                </a>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="#about" class="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                    <a href="#skills" class="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Skills</a>
+                    <a href="#projects" class="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Projects</a>
+                    <a href="#education" class="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Education</a>
+                    <a href="#achievements" class="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Achievements</a>
+                    <a href="#contact" class="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white p-2">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#020617]/95 backdrop-blur-md px-4 pt-2 pb-4 space-y-1 absolute w-full mt-4">
+            <a href="#about" class="mobile-link text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+            <a href="#skills" class="mobile-link text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Skills</a>
+            <a href="#projects" class="mobile-link text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+            <a href="#education" class="mobile-link text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Education</a>
+            <a href="#achievements" class="mobile-link text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Achievements</a>
+            <a href="#contact" class="mobile-link text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-600/20 rounded-full mix-blend-screen filter blur-[100px] animate-float"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full mix-blend-screen filter blur-[100px] animate-float" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center reveal scale-up">
+            <div class="w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-slate-700 shadow-2xl shadow-indigo-900/50 mb-8 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center">
+                <img src="./assets/profile.png" alt="Priyanshu Raj" class="w-full h-full object-cover object-top">
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">
+                    Priyanshu Raj
+                </span>
+            </h1>
+
+            <div class="h-12 mb-6 text-2xl md:text-4xl text-gray-300 font-medium">
+                <span id="typed-text"></span><span class="typing-cursor"></span>
+            </div>
+
+            <p class="max-w-2xl text-lg md:text-xl text-gray-400 mb-10 leading-relaxed mx-auto">
+                Welcome to my digital playground! I am a Computer Science undergraduate at Lovely Professional University with a strong interest in software development, data analysis, and problem solving.
+            </p>
+
+            <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 pointer-events-auto">
+                <a href="#projects" class="px-8 py-4 bg-primary hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-lg shadow-blue-500/30">
+                    View My Work
+                </a>
+                <a href="./public/cv.pdf" download="Priyanshu_Raj_CV.pdf" class="px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-purple-500/30 flex items-center gap-2">
+                    <i class="fas fa-download"></i> Download CV
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-transparent border border-slate-700 hover:border-gray-400 text-gray-300 hover:text-white rounded-lg font-medium transition-colors">
+                    Contact Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">About Me</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="w-full md:w-1/2 flex flex-col gap-8 reveal-left">
+                    <div class="w-full flex justify-center lg:justify-start">
+                        <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-4 border-slate-700 shadow-xl shadow-black/50 mx-auto lg:mx-0 bg-slate-900/50 backdrop-blur-md">
+                            <img src="./assets/profile.png" alt="Priyanshu Raj" class="w-full h-full object-cover object-top">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-2xl shadow-xl shadow-black/50">
+                        <h3 class="text-2xl font-semibold text-white mb-6">Who I Am</h3>
+                        <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                            I am a passionate Computer Science undergraduate at Lovely Professional University. I design and build functional software applications with a keen eye for performance and user experience. 
+                        </p>
+                        <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                            I enjoy working with data, building analytical projects, and solving complex algorithmic challenges. Whether I am writing clean backend logic, interactive frontend interfaces, or deriving insights from datasets, I continuously improve my skills through coding practice, real-world projects, and exploring new technologies.
+                        </p>
+                        <div class="flex flex-wrap gap-3 mt-8">
+                            <span class="px-4 py-2 bg-indigo-900/30 text-indigo-300 border border-indigo-800/50 rounded-full text-sm font-medium">Problem Solving</span>
+                            <span class="px-4 py-2 bg-indigo-900/30 text-indigo-300 border border-indigo-800/50 rounded-full text-sm font-medium">Data Analysis</span>
+                            <span class="px-4 py-2 bg-indigo-900/30 text-indigo-300 border border-indigo-800/50 rounded-full text-sm font-medium">Web Development</span>
+                            <span class="px-4 py-2 bg-indigo-900/30 text-indigo-300 border border-indigo-800/50 rounded-full text-sm font-medium">Quick Learner</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 grid grid-cols-2 gap-4 reveal-right">
+                    <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl text-center hover:bg-slate-800/50 transition-colors">
+                        <h3 class="text-primary font-bold text-xl md:text-2xl mb-2">B.Tech CSE</h3>
+                        <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Education</p>
+                    </div>
+                    <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl text-center hover:bg-slate-800/50 transition-colors">
+                        <h3 class="text-primary font-bold text-xl md:text-2xl mb-2">India</h3>
+                        <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Location</p>
+                    </div>
+                    <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl text-center hover:bg-slate-800/50 transition-colors">
+                        <h3 class="text-primary font-bold text-xl md:text-2xl mb-2">150+ LeetCode</h3>
+                        <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Problem Solving</p>
+                    </div>
+                    <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl text-center hover:bg-slate-800/50 transition-colors">
+                        <h3 class="text-primary font-bold text-xl md:text-2xl mb-2">Projects & Bootcamp</h3>
+                        <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 bg-[#020617]/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Core Competencies</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Languages -->
+                <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl reveal">
+                    <h3 class="text-xl font-semibold text-white mb-6 border-b border-slate-800 pb-2">Languages</h3>
+                    <div class="space-y-4">
+                        <div class="skill-item" data-level="90">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">Python</span><span class="text-sm font-medium text-gray-500">90%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">C++ / C</span><span class="text-sm font-medium text-gray-500">85%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">JavaScript</span><span class="text-sm font-medium text-gray-500">80%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Libraries -->
+                <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl reveal">
+                    <h3 class="text-xl font-semibold text-white mb-6 border-b border-slate-800 pb-2">Libraries & Frameworks</h3>
+                    <div class="space-y-4">
+                        <div class="skill-item" data-level="85">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">Pandas & NumPy</span><span class="text-sm font-medium text-gray-500">85%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">Matplotlib & Seaborn</span><span class="text-sm font-medium text-gray-500">80%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="75">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">Scikit-Learn & Plotly</span><span class="text-sm font-medium text-gray-500">75%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl reveal">
+                    <h3 class="text-xl font-semibold text-white mb-6 border-b border-slate-800 pb-2">Tools & Platforms</h3>
+                    <div class="space-y-4">
+                        <div class="skill-item" data-level="90">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">Jupyter & Excel</span><span class="text-sm font-medium text-gray-500">90%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">MySQL & Power BI</span><span class="text-sm font-medium text-gray-500">85%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">Git, GitHub & Kaggle</span><span class="text-sm font-medium text-gray-500">80%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core CS -->
+                <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl reveal">
+                    <h3 class="text-xl font-semibold text-white mb-6 border-b border-slate-800 pb-2">Core CS</h3>
+                    <div class="space-y-4">
+                        <div class="skill-item" data-level="90">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">SQL</span><span class="text-sm font-medium text-gray-500">90%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">DBMS & OOPs</span><span class="text-sm font-medium text-gray-500">85%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-300">OS & Computer Networks</span><span class="text-sm font-medium text-gray-500">80%</span></div>
+                            <div class="w-full bg-slate-800 rounded-full h-2"><div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center reveal">
+                <h3 class="text-xl font-semibold text-white mb-6">Soft Skills</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <span class="px-5 py-2.5 bg-slate-900 border border-slate-700 text-gray-300 rounded-lg text-sm font-medium">Time Management</span>
+                    <span class="px-5 py-2.5 bg-slate-900 border border-slate-700 text-gray-300 rounded-lg text-sm font-medium">Leadership</span>
+                    <span class="px-5 py-2.5 bg-slate-900 border border-slate-700 text-gray-300 rounded-lg text-sm font-medium">Problem Solving</span>
+                    <span class="px-5 py-2.5 bg-slate-900 border border-slate-700 text-gray-300 rounded-lg text-sm font-medium">Adaptability</span>
+                    <span class="px-5 py-2.5 bg-slate-900 border border-slate-700 text-gray-300 rounded-lg text-sm font-medium">Quick Learner</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Featured Projects</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Project 1 -->
+                <div class="group bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-colors reveal-left flex flex-col">
+                    <div class="w-full h-48 sm:h-64 bg-slate-800 relative overflow-hidden border-b border-slate-700/50 flex snap-x snap-mandatory overflow-x-auto scrollbar-hide">
+                        <img src="./assets/data_analysis.png" alt="Data Analysis Overview" class="w-full h-full object-cover shrink-0 snap-center hover:scale-105 transition-transform duration-500 clickable-image fallbacks-bg">
+                        <img src="./assets/heatmap.png.jpeg" alt="Correlation Heatmap" class="w-full h-full object-cover shrink-0 snap-center hover:scale-105 transition-transform duration-500 clickable-image fallbacks-bg">
+                        <img src="./assets/line_chart.png" alt="Employment Trend Line Chart" class="w-full h-full object-cover shrink-0 snap-center hover:scale-105 transition-transform duration-500 clickable-image fallbacks-bg">
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col text-sm text-gray-500 text-center bg-slate-900/80 absolute right-2 top-2 rounded-full px-3 py-1 bg-black/50 backdrop-blur text-xs text-white pointer-events-none tracking-wide z-10"><i class="fas fa-arrows-left-right mr-1"></i> Swipe</div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white group-hover:text-primary transition-colors">Employment Data Analysis</h3>
+                                <p class="text-sm text-indigo-400 font-medium mt-1">Mar 2025 - May 2025</p>
+                            </div>
+                            <a href="https://github.com/priyanshuraj402" class="text-gray-400 hover:text-white transition-colors" target="_blank">
+                                <i class="fab fa-github text-2xl"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-400 mb-6 leading-relaxed">Built a robust Python-based data analysis pipeline to explore employment datasets. The project uncovers workforce trends, sector distributions, and extracts actionable business insights derived from extensive data exploration.</p>
+                        <ul class="mb-8 space-y-2">
+                            <li class="text-sm text-gray-300 flex items-start"><span class="text-primary mr-2 mt-1">•</span>Data cleaning and processing using Pandas.</li>
+                            <li class="text-sm text-gray-300 flex items-start"><span class="text-primary mr-2 mt-1">•</span>Extensive visualization using Matplotlib and Seaborn.</li>
+                            <li class="text-sm text-gray-300 flex items-start"><span class="text-primary mr-2 mt-1">•</span>Generated insights on workforce growth.</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Python</span>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Pandas</span>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Matplotlib</span>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Jupyter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-colors reveal-right flex flex-col">
+                    <div class="w-full h-48 sm:h-64 bg-slate-800 relative overflow-hidden border-b border-slate-700/50 flex items-center justify-center">
+                        <img src="./assets/infectious_disease.png" alt="Infectious Disease Dashboard" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 clickable-image" onerror="this.src='./assets/dashboard.png'">
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white group-hover:text-primary transition-colors">Infectious Disease Dashboard</h3>
+                                <p class="text-sm text-indigo-400 font-medium mt-1">Feb 2025 - Apr 2025</p>
+                            </div>
+                            <a href="https://github.com/priyanshuraj402" class="text-gray-400 hover:text-white transition-colors" target="_blank">
+                                <i class="fab fa-github text-2xl"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-400 mb-6 leading-relaxed">Analyzed a comprehensive California infectious disease dataset (2001-2015) comprising 120,969 total cases to seamlessly align with health data to identify high-risk regions and seasonal patterns for strategic planning.</p>
+                        <ul class="mb-8 space-y-2">
+                            <li class="text-sm text-gray-300 flex items-start"><span class="text-primary mr-2 mt-1">•</span>Built interactive Excel dashboard.</li>
+                            <li class="text-sm text-gray-300 flex items-start"><span class="text-primary mr-2 mt-1">•</span>Implemented Pivot Tables, Charts, Slicers, and KPIs.</li>
+                            <li class="text-sm text-gray-300 flex items-start"><span class="text-primary mr-2 mt-1">•</span>Identified trends for Campylobacteriosis & Shigellosis.</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Excel</span>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Data Analysis</span>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-300 text-xs font-medium rounded-full border border-blue-800/50">Dashboards</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-24 bg-[#020617]/50 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Education & Training</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-800 before:to-transparent">
+                <!-- LPU -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group reveal">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-900 text-primary shadow shrink-0 md:order-1 md:translate-x-1/2 relative z-10">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800 shadow-xl group-hover:border-indigo-500/30 transition-colors">
+                        <h3 class="font-bold text-lg text-white">Bachelor of Technology – CSE</h3>
+                        <div class="text-primary font-medium text-sm my-1">Lovely Professional University, Punjab</div>
+                        <time class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Aug 2023 – Present</time>
+                        <div class="mt-2"><span class="inline-block px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm font-medium">CGPA: 6.55</span></div>
+                    </div>
+                </div>
+                
+                <!-- School 1 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:even:flex-row group reveal">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-900 text-secondary shadow shrink-0 md:order-1 md:-translate-x-1/2 relative z-10">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800 shadow-xl group-hover:border-indigo-500/30 transition-colors">
+                        <h3 class="font-bold text-lg text-white">Intermediate</h3>
+                        <div class="text-primary font-medium text-sm my-1">Sarla Birla Public School, Ranchi</div>
+                        <div class="mt-2"><span class="inline-block px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm font-medium">Percentage: 72.2%</span></div>
+                    </div>
+                </div>
+
+                <!-- School 2 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group reveal">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-900 text-purple-400 shadow shrink-0 md:order-1 md:translate-x-1/2 relative z-10">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800 shadow-xl group-hover:border-indigo-500/30 transition-colors">
+                        <h3 class="font-bold text-lg text-white">Matriculation</h3>
+                        <div class="text-primary font-medium text-sm my-1">Vikas Vidyalaya, Ranchi</div>
+                        <div class="mt-2"><span class="inline-block px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm font-medium">Percentage: 76.4%</span></div>
+                    </div>
+                </div>
+
+                <!-- Bootcamp -->
+                <div class="relative flex items-center justify-between md:justify-normal md:even:flex-row group reveal">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-900 text-yellow-500 shadow shrink-0 md:order-1 md:-translate-x-1/2 relative z-10">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800 shadow-xl group-hover:border-indigo-500/30 transition-colors">
+                        <h3 class="font-bold text-lg text-white">Java Bootcamp</h3>
+                        <div class="text-primary font-medium text-sm my-1">Center for Professional Enhancement (LPU)</div>
+                        <time class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Jun 2025 – Jul 2025</time>
+                        <div class="mt-2"><span class="inline-block px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm font-medium">DSA, Competitive Programming</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Achievements & Certifications</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Achievements -->
+                <div class="reveal-left">
+                    <div class="flex items-center gap-3 mb-8">
+                        <i class="fas fa-trophy text-primary text-3xl"></i>
+                        <h3 class="text-3xl font-bold text-white">Highlights</h3>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex bg-slate-900/50 backdrop-blur-md border border-slate-800 p-5 rounded-xl">
+                            <i class="fas fa-star text-yellow-400 text-2xl mr-4 shrink-0 mt-1"></i>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-200 mb-1">5-Star on Hacker Rank</h4>
+                                <p class="text-gray-400 text-sm">Achieved and maintained a top-tier rating on the platform.</p>
+                            </div>
+                        </div>
+                        <div class="flex bg-slate-900/50 backdrop-blur-md border border-slate-800 p-5 rounded-xl">
+                            <i class="fas fa-bullseye text-red-400 text-2xl mr-4 shrink-0 mt-1"></i>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-200 mb-1">150+ Coding Problems Solved</h4>
+                                <p class="text-gray-400 text-sm">Consistently challenged myself with complex algorithms.</p>
+                            </div>
+                        </div>
+                        <div class="flex bg-slate-900/50 backdrop-blur-md border border-slate-800 p-5 rounded-xl">
+                            <i class="fas fa-code text-green-400 text-2xl mr-4 shrink-0 mt-1"></i>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-200 mb-1">Daily Coding Streak</h4>
+                                <p class="text-gray-400 text-sm">Maintained a sharp daily routine of solving problems.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="reveal-right">
+                    <div class="flex items-center gap-3 mb-8">
+                        <i class="fas fa-certificate text-secondary text-3xl"></i>
+                        <h3 class="text-3xl font-bold text-white">Certifications</h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-4 rounded-xl hover:border-indigo-500/50 transition-colors flex flex-col group relative overflow-hidden">
+                            <div class="w-full h-32 mb-3 rounded-lg overflow-hidden bg-slate-800">
+                                <img src="./assets/cert_comp_theory.jpg" alt="ChatGPT-4 Prompt Engineering" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 clickable-image">
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-400 mr-2 mt-1 shrink-0"></i>
+                                <p class="text-gray-300 font-medium leading-snug text-sm">ChatGPT-4 Prompt Engineering (Infosys)</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-4 rounded-xl hover:border-indigo-500/50 transition-colors flex flex-col group relative overflow-hidden">
+                            <div class="w-full h-32 mb-3 rounded-lg overflow-hidden bg-slate-800">
+                                <img src="./assets/cert_cpp_chatgpt.jpg" alt="Java Bootcamp" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500 clickable-image">
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-400 mr-2 mt-1 shrink-0"></i>
+                                <p class="text-gray-300 font-medium leading-snug text-sm">Java Bootcamp (LPU Center for Prof. Enhancement)</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-4 rounded-xl hover:border-indigo-500/50 transition-colors flex flex-col group relative overflow-hidden">
+                            <div class="w-full h-32 mb-3 rounded-lg overflow-hidden bg-slate-800">
+                                <img src="./assets/cert_chatgpt_prompt.jpg" alt="C and C++ Programming with ChatGPT" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500 clickable-image">
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-400 mr-2 mt-1 shrink-0"></i>
+                                <p class="text-gray-300 font-medium leading-snug text-sm">C and C++ Programming with ChatGPT Practical (Udemy)</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-4 rounded-xl hover:border-indigo-500/50 transition-colors flex flex-col group relative overflow-hidden">
+                            <div class="w-full h-32 mb-3 rounded-lg overflow-hidden bg-slate-800">
+                                <img src="./assets/cert_java_bootcamp.png" alt="Computational Theory" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 clickable-image">
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-400 mr-2 mt-1 shrink-0"></i>
+                                <p class="text-gray-300 font-medium leading-snug text-sm">Computational Theory (Infosys)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <section id="contact" class="py-24 relative border-t border-slate-800 bg-[#020617]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Let's Connect</h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">Open for opportunities, collaboration, or a quick chat. Feel free to reach out to me via email or phone!</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mb-16">
+                <a href="mailto:priyanshujha782@gmail.com" class="flex items-center gap-3 px-6 py-3 bg-slate-900 border border-slate-700 rounded-full hover:border-primary text-gray-300 hover:text-white transition-all">
+                    <i class="fas fa-envelope text-primary"></i>
+                    priyanshujha782@gmail.com
+                </a>
+                <a href="tel:+919142879533" class="flex items-center gap-3 px-6 py-3 bg-slate-900 border border-slate-700 rounded-full hover:border-primary text-gray-300 hover:text-white transition-all">
+                    <i class="fas fa-phone text-secondary"></i>
+                    +91-9142879533
+                </a>
+                <a href="./public/cv.pdf" download="Priyanshu_Raj_CV.pdf" class="flex items-center gap-3 px-6 py-3 bg-slate-900 border border-slate-700 rounded-full hover:border-purple-500 text-gray-300 hover:text-white transition-all">
+                    <i class="fas fa-download text-purple-400"></i>
+                    Download CV
+                </a>
+            </div>
+
+            <div class="flex justify-center gap-6 mt-12 mb-8">
+                <a href="https://github.com/priyanshuraj402" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 transition">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://linkedin.com/in/priyanshuraj402" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 transition">
+                    <i class="fab fa-linkedin-in text-xl"></i>
+                </a>
+            </div>
+            
+            <p class="text-gray-600 text-sm">&copy; 2025 Priyanshu Raj. All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+        <button id="lightbox-close" class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 focus:outline-none z-50 transition-colors">&times;</button>
+        <div class="relative max-w-full max-h-full flex items-center justify-center">
+            <img id="lightbox-img" src="" alt="Expanded Image" class="rounded-lg shadow-2xl shadow-indigo-500/20 object-contain">
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const clickableImages = document.querySelectorAll('.clickable-image');
+
+        clickableImages.forEach(img => {
+            img.addEventListener('click', (e) => {
+                // Prevent event bubbling if necessary
+                e.stopPropagation();
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt || 'Expanded Image';
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        });
+
+        // Close functions
+        const closeLightbox = () => {
+            lightbox.classList.remove('open');
+            setTimeout(() => {
+                lightboxImg.src = ''; // Clear source after fade out
+            }, 300);
+            document.body.style.overflow = ''; // Restore scrolling
+        };
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+                closeLightbox();
+            }
+        });
+
+        // Typing Effect
+        const roles = ["Software Developer", "Data Analyst", "Problem Solver"];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingEl = document.getElementById('typed-text');
+        
+        function type() {
+            const currentRole = roles[roleIndex];
+            
+            if (isDeleting) {
+                typingEl.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingEl.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentRole.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(type, typeSpeed);
+        }
+        
+        // Start typing
+        setTimeout(type, 1000);
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('bg-[#020617]/80', 'backdrop-blur-md', 'shadow-lg');
+                nav.classList.remove('bg-transparent');
+            } else {
+                nav.classList.remove('bg-[#020617]/80', 'backdrop-blur-md', 'shadow-lg');
+                nav.classList.add('bg-transparent');
+            }
+        });
+
+        // Intersection Observer for Animations (Scroll Reveals)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Specific logic for skill bars
+                    if (entry.target.id === 'skills') {
+                        document.querySelectorAll('.skill-item').forEach(item => {
+                            const level = item.getAttribute('data-level');
+                            const bar = item.querySelector('.skill-bar-fill');
+                            setTimeout(() => {
+                                bar.style.width = level + '%';
+                            }, 300); // slight delay
+                        });
+                    }
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, #skills').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
