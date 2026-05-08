@@ -1,118 +1,93 @@
-"use client";
-
+'use client';
 import { motion } from 'framer-motion';
+import SectionHeading from './ui/SectionHeading';
 
-const SKILL_CATEGORIES = [
+const skillCategories = [
   {
     title: "Languages",
-    skills: [
-      { name: "Python", level: 90 },
-      { name: "C++", level: 85 },
-      { name: "JavaScript", level: 80 },
-      { name: "C", level: 85 },
-    ]
+    skills: ["C/C++", "JavaScript", "Python"],
+    color: "from-blue-500 to-cyan-400"
   },
   {
-    title: "Libraries & Frameworks",
-    skills: [
-      { name: "NumPy", level: 85 },
-      { name: "Pandas", level: 85 },
-      { name: "Matplotlib", level: 80 },
-      { name: "Seaborn", level: 80 },
-      { name: "Plotly", level: 75 },
-      { name: "Scikit-Learn", level: 70 },
-    ]
+    title: "Frameworks & Libraries",
+    skills: ["NumPy", "Pandas", "Matplotlib", "Seaborn", "Plotly", "Scikit-learn"],
+    color: "from-purple-500 to-indigo-400"
   },
   {
     title: "Tools & Platforms",
-    skills: [
-      { name: "MySQL", level: 85 },
-      { name: "Jupyter", level: 90 },
-      { name: "Git & GitHub", level: 80 },
-      { name: "Kaggle", level: 75 },
-      { name: "Power BI", level: 80 },
-      { name: "Excel", level: 90 },
-    ]
+    skills: ["MySQL", "Jupyter Notebook", "Git", "GitHub", "Kaggle", "Power BI", "Excel"],
+    color: "from-pink-500 to-rose-400"
   },
   {
-    title: "Core CS",
-    skills: [
-      { name: "DBMS", level: 85 },
-      { name: "SQL", level: 90 },
-      { name: "OOPs", level: 85 },
-      { name: "OS", level: 80 },
-      { name: "Computer Networks", level: 75 },
-    ]
+    title: "Core Subjects",
+    skills: ["DBMS", "Operating Systems", "Computer Networks", "SQL", "OOPs"],
+    color: "from-amber-500 to-orange-400"
+  },
+  {
+    title: "Soft Skills",
+    skills: ["Leadership", "Time Management", "Adaptability", "Problem Solving"],
+    color: "from-emerald-500 to-teal-400"
   }
 ];
 
-const SOFT_SKILLS = ["Time Management", "Leadership", "Problem Solving", "Adaptability", "Quick Learner"];
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 }
+  }
+};
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 bg-[#020617]/50 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Core Competencies</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {SKILL_CATEGORIES.map((category, idx) => (
+    <section id="skills" className="py-24 relative">
+      <div className="container mx-auto px-6 z-10">
+        <SectionHeading title="My Skills" subtitle="Technologies and tools I work with" />
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {skillCategories.map((category, idx) => (
             <motion.div
-              key={category.title}
+              key={idx}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl"
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              className="glass-card p-8 group hover:-translate-y-2 transition-transform duration-300"
             >
-              <h3 className="text-xl font-semibold text-white mb-6 border-b border-slate-800 pb-2">{category.title}</h3>
-              <div className="space-y-4">
-                {category.skills.map((skill) => (
-                  <div key={skill.name}>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-300">{skill.name}</span>
-                      <span className="text-sm font-medium text-gray-500">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-slate-800 rounded-full h-2">
-                      <motion.div
-                        className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.3 }}
-                      ></motion.div>
-                    </div>
-                  </div>
+              <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                <span className={`w-3 h-8 rounded-full bg-gradient-to-b ${category.color}`} />
+                {category.title}
+              </h3>
+              
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="flex flex-wrap gap-3"
+              >
+                {category.skills.map((skill, skillIdx) => (
+                  <motion.span
+                    key={skillIdx}
+                    variants={itemVariants}
+                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors cursor-default"
+                  >
+                    {skill}
+                  </motion.span>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.5, delay: 0.4 }}
-           className="mt-12 text-center"
-        >
-          <h3 className="text-xl font-semibold text-white mb-6">Soft Skills</h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {SOFT_SKILLS.map((skill) => (
-              <span key={skill} className="px-5 py-2.5 bg-slate-900 border border-slate-700 text-gray-300 rounded-lg text-sm font-medium hover:border-indigo-500 hover:text-white transition-colors cursor-default">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

@@ -1,83 +1,61 @@
-"use client";
-
+'use client';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import SectionHeading from './ui/SectionHeading';
+import { BookOpen, Code, Lightbulb, Users } from 'lucide-react';
+
+const HIGHLIGHTS = [
+  { icon: <BookOpen className="text-primary" size={24}/>, title: "Continuous Learner", desc: "Quick learner with a passion for emerging technologies." },
+  { icon: <Code className="text-secondary" size={24}/>, title: "Clean Code", desc: "Writing efficient, maintainable, and readable code." },
+  { icon: <Lightbulb className="text-accent" size={24}/>, title: "Problem Solver", desc: "Strong analytical skills to tackle complex challenges." },
+  { icon: <Users className="text-blue-400" size={24}/>, title: "Leadership", desc: "Proven leadership qualities and teamwork skills." },
+];
 
 export default function About() {
   return (
     <section id="about" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">About Me</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
-        </motion.div>
-
-        <div className="flex flex-col md:flex-row gap-12 items-center">
-          <motion.div
+      <div className="container mx-auto px-6 z-10">
+        <SectionHeading title="About Me" subtitle="Get to know me better" />
+        
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-full md:w-1/2 flex flex-col gap-8"
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="glass-card p-8 md:p-10 relative overflow-hidden group h-full"
           >
-            <div className="w-full flex justify-center lg:justify-start">
-               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-4 border-slate-700 shadow-xl shadow-black/50 mx-auto lg:mx-0 bg-slate-900/50 backdrop-blur-md">
-                 <Image 
-                   src="/assets/profile.jpg" 
-                   alt="Priyanshu Raj" 
-                   fill
-                   className="object-cover object-top"
-                 />
-               </div>
-            </div>
-
-            <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-2xl shadow-xl shadow-black/50">
-              <h3 className="text-2xl font-semibold text-white mb-6">Who I Am</h3>
-              <p className="text-gray-400 text-lg leading-relaxed mb-6">
-                I am a passionate Computer Science undergraduate at Lovely Professional University. I design and build highly functional software applications with a keen eye for performance and user experience. 
-              </p>
-              <p className="text-gray-400 text-lg leading-relaxed mb-6">
-                I enjoy working with data, building analytical projects, and solving complex algorithmic challenges. Whether I am writing clean backend logic, interactive frontend interfaces, or deriving insights from datasets, I continuously improve my skills through coding practice, real-world projects, and exploring new technologies.
-              </p>
-              <div className="flex flex-wrap gap-3 mt-8">
-                {['Problem Solving', 'Data Analysis', 'Web Development', 'Quick Learner'].map((tag) => (
-                  <span key={tag} className="px-4 py-2 bg-indigo-900/30 text-indigo-300 border border-indigo-800/50 rounded-full text-sm font-medium">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150" />
+            <h3 className="text-2xl font-semibold mb-6 text-white flex items-center gap-3">
+              <span className="w-8 h-1 bg-primary rounded-full inline-block" /> Who am I?
+            </h3>
+            <p className="text-gray-300 leading-relaxed mb-6 text-lg">
+              I am a <span className="text-white font-semibold">B.Tech Computer Science Engineering student</span> at Lovely Professional University. I am deeply passionate about Python, Data Analytics, Java, and Problem Solving.
+            </p>
+            <p className="text-gray-300 leading-relaxed text-lg">
+              My main areas of interest include <span className="text-white font-semibold">AI, Data Visualization, and Software Development</span>. I consider myself a quick learner equipped with strong analytical abilities and leadership qualities, constantly seeking opportunities to build impactful solutions and grow professionally.
+            </p>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full md:w-1/2 grid grid-cols-2 gap-4"
-          >
-            {[
-              { title: "Education", value: "B.Tech CSE" },
-              { title: "Location", value: "India" },
-              { title: "Problem Solving", value: "150+ LeetCode" },
-              { title: "Experience", value: "Projects & Bootcamp" }
-            ].map((stat, idx) => (
-              <div key={idx} className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-2xl text-center hover:bg-slate-800/50 transition-colors cursor-default">
-                <H3 className="text-primary font-bold text-xl md:text-2xl mb-2">{stat.value}</H3>
-                <p className="text-gray-400 text-sm font-medium uppercase tracking-wider">{stat.title}</p>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
+            {HIGHLIGHTS.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="glass-card p-6 flex flex-col items-start hover:-translate-y-2 transition-transform cursor-pointer group"
+              >
+                <div className="p-3 bg-white/5 rounded-xl mb-4 group-hover:scale-110 transition-transform group-hover:bg-white/10">
+                  {item.icon}
+                </div>
+                <h4 className="text-white font-medium mb-2 text-lg">{item.title}</h4>
+                <p className="text-sm text-gray-400 leading-relaxed">{item.desc}</p>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-const H3 = ({ children, className }: { children: React.ReactNode, className?: string }) => <h3 className={className}>{children}</h3>;

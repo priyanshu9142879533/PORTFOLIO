@@ -7,7 +7,16 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-gray-300 antialiased overflow-x-hidden;
+    @apply bg-background text-gray-300 antialiased overflow-x-hidden selection:bg-primary/30 selection:text-white;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-cardBg backdrop-blur-xl border border-cardBorder rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
   }
 }
 
@@ -17,14 +26,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #020617; 
+  background: #030712; 
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #1f2937;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155; 
+  background: #374151; 
 }
