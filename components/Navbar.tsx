@@ -1,7 +1,6 @@
-"use client";
-
-import { motion } from 'framer-motion';
+'use client';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
@@ -40,61 +39,68 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.nav
+    <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#020617]/80 backdrop-blur-md shadow-lg shadow-black/20' : 'bg-transparent'}`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'glass-card py-4' : 'bg-transparent py-6'
+      }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex-shrink-0">
-            <a href="#" className="font-bold text-2xl tracking-tighter">
-              <span className="text-primary">PR</span> Portfolio
-            </a>
-          </div>
-          
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-6">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-          </div>
-          
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-300 hover:text-white p-2"
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        <a href="#home" className="text-2xl font-bold text-white tracking-tighter">
+          PR<span className="text-primary">.</span>
+        </a>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-8">
+          {navItems.map((item) => (
+            <a 
+              key={item.name} 
+              href={item.href}
+              className={`text-sm font-medium transition-colors hover:text-white relative ${
+                activeSection === item.href.substring(1) ? 'text-white' : 'text-gray-400'
+              }`}
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+              {item.name}
+              {activeSection === item.href.substring(1) && (
+                <motion.div 
+                  layoutId="activeNav"
+                  className="absolute -bottom-2 left-0 right-0 h-0.5 bg-primary rounded-full"
+                />
+              )}
+            </a>
+          ))}
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="md:hidden text-gray-300 hover:text-white"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <motion.div
+      {isOpen && (
+        <motion.div 
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="md:hidden bg-[#020617]/95 backdrop-blur-md"
+          exit={{ opacity: 0, height: 0 }}
+          className="md:hidden glass-card mt-2 mx-4 rounded-xl overflow-hidden"
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          <div className="flex flex-col py-4">
+            {navItems.map((item) => (
+              <a 
+                key={item.name} 
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={`px-6 py-3 text-sm font-medium hover:bg-white/5 transition-colors ${
+                  activeSection === item.href.substring(1) ? 'text-primary bg-white/5' : 'text-gray-300'
+                }`}
               >
-                {link.name}
+                {item.name}
               </a>
             ))}
           </div>
